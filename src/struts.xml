@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+
+<struts>
+
+    <constant name="struts.devMode" value="false"/>
+    <constant name="struts.objectFactory" value="spring"/>
+
+    <package name="com.c1yde3.ssh.action" namespace="/" extends="struts-default">
+        <action name="login" class="com.c1yde3.ssh.action.UserAction" method="login">
+            <result name="success">/success.jsp</result>
+            <result name="error">/index.jsp</result>
+        </action>
+
+        <action name="register" class="com.c1yde3.ssh.action.UserAction" method="register">
+            <result name="success">/index.jsp</result>
+            <result name="error">/register.jsp</result>
+        </action>
+    </package>
+</struts>
