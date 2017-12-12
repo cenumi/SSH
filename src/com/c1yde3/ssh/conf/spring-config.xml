@@ -11,7 +11,7 @@
     <!-- 加载数据库属性配置文件 -->
     <context:property-placeholder location="classpath:/com/c1yde3/ssh/conf/db.properties" />
 
-    <!-- data connection setting -->
+    <!-- 数据库连接池配置 -->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
         <property name="driverClass" value="${db.driverClassName}"/>
         <property name="jdbcUrl" value="${db.url}"/>
@@ -22,7 +22,7 @@
         <property name="maxPoolSize" value="10"/>
     </bean>
 
-    <!-- session工厂 -->
+    <!-- session工厂配置 -->
     <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
         <property name="configLocation" value="classpath:com/c1yde3/ssh/conf/hibernate.cfg.xml" />
         <property name="dataSource" ref="dataSource" />
