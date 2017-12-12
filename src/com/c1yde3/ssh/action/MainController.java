@@ -25,7 +25,7 @@ public class MainController {
     private String date;
 
     /**
-     * 函数说明:  指定出发地，目的地和时间，返回所有可能车次
+     * 函数说明:  指定出发地，目的地和时间，返回所有可能的车次
      *
      * @return 返回所有匹配车次
      */
