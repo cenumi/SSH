@@ -21,6 +21,9 @@
     <div>
       <a href="register.jsp">还没有账号?点此注册</a>
     </div>
+    <div>
+      <a href="trainIndex.jsp">火车票</a>
+    </div>
   </form>
   </body>
 </html>
