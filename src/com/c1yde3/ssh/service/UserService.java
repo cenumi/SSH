@@ -2,6 +2,9 @@ package com.c1yde3.ssh.service;
 
 import com.c1yde3.ssh.model.User;
 
+/**
+ * Created by 10543 on 2017/12/12.
+ */
 public interface UserService {
 
     User checkLogin(String name, String pass);

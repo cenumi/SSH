@@ -8,22 +8,50 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
   <head>
-    <title>登录</title>
+      <title>登录</title>
+      <link rel="stylesheet" href="layui/css/layui.css">
+      <link rel="stylesheet" href="layui/css/ssh.css">
   </head>
   <body>
-  <form action="login.action" method="post">
-    <input type="text" name="username" placeholder="输入用户名" />
-    <br/>
-    <input type="password" name="password" placeholder="输入密码" />
-    <br />
-    <input type="submit" value="登录">
-    <input type="reset" value="重置">
-    <div>
-      <a href="register.jsp">还没有账号?点此注册</a>
+  <div class="layui-container center">
+      <form class="layui-form" action="login.action" method="post">
+          <div class="layui-form-item">
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="username" required lay-verify="required" placeholder="输入用户名" />
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-inline">
+            <input class="layui-input" type="password" name="password" required lay-verify="required" placeholder="请输入密码" />
+            </div>
+        </div>
+            <div class="layui-form-item">
+                <div class="layui-input-inline">
+                    <button class="layui-btn" lay-submit lay-filter="login_form">登陆</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    <div>
+                        <a href="register.jsp">还没有账号?点此注册</a>
+                    </div>
+                    <div>
+                        <a href="trainIndex.jsp">火车票</a>
+                    </div>
+                </div>
+            </div>
+      </form>
+
+      <script src="layui/layui.js"></script>
+      <script>
+          //Demo
+          layui.use('form', function(){
+              var form = layui.form;
+                  //监听提交
+              form.on('submit(login_form)', function(data){
+                  layer.msg(JSON.stringify(data.field));
+                  return true;
+              });
+          });
+      </script>
     </div>
-    <div>
-      <a href="trainIndex.jsp">火车票</a>
-    </div>
-  </form>
+
   </body>
 </html>

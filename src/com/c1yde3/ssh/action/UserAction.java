@@ -6,7 +6,9 @@ import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-
+/**
+ * Created by 10543 on 2017/12/12.
+ */
 @Controller
 @Scope("prototype")
 public class UserAction extends ActionSupport {
