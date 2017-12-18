@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import java.util.Objects;
 
 /**
- * Created by 10543 on 2017/12/12.
+ * Created by c1yde3 on 2017/12/12.
  */
 
 @Entity
