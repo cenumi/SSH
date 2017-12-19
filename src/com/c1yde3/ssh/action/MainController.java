@@ -1,6 +1,8 @@
 package com.c1yde3.ssh.action;
 
 import com.c1yde3.ssh.service.Service;
+import com.c1yde3.ssh.utils.ResultUtils;
+import com.google.gson.Gson;
 import com.opensymphony.xwork2.ActionContext;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +10,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by wangyonghao8 on 2017/12/12.
@@ -30,10 +36,12 @@ public class MainController {
      * @return 返回所有匹配车次
      */
     public String getAllTrips() {
-        List<String[]> lists = service.getALLTrips(startStation, endStation, date);
-        ActionContext.getContext().put("tripLists", lists);
+        Map<String, Object>map = service.getAllTrips(startStation,endStation,date);
+
+        Gson gson = new Gson();
+        String result = gson.toJson(map);
         HttpServletRequest request = ServletActionContext.getRequest();
-        request.setAttribute("tripLists", lists);
+        request.setAttribute("data",result);
         return "success";
     }
 

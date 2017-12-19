@@ -13,6 +13,12 @@
       <link rel="stylesheet" href="layui/css/ssh.css">
   </head>
   <body>
+  <%
+      //登陆失败提示信息
+      if(request.getAttribute("msg")!= null && !request.getAttribute("msg").equals("登陆成功")){
+          out.print("<h2>"+request.getAttribute("msg")+"</h2>");
+      }
+  %>
   <div class="layui-container center">
       <form class="layui-form" action="login.action" method="post">
           <div class="layui-form-item">
@@ -33,7 +39,7 @@
                         <a href="register.jsp">还没有账号?点此注册</a>
                     </div>
                     <div>
-                        <a href="trainIndex.jsp">火车票</a>
+                        <a href="trainIndex.jsp">先去看火车票</a>
                     </div>
                 </div>
             </div>

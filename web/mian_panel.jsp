@@ -13,6 +13,17 @@
 
 </head>
 <body>
+<%
+    //用户信息，列车次信息获取
+    if(request.getAttribute("user")!= null && !request.getAttribute("user").equals("")){
+        String username = (String) request.getAttribute("user");
+        out.print(username);//测试
+    }
+    if(request.getAttribute("data")!=null && !request.getAttribute("data").equals("")){
+        String data = (String) request.getAttribute("data");
+        out.print(data);//测试
+    }
+%>
     <div class="layui-layout-admin">
         <div class="layui-header">
             <div class="layui-logo">12307 购票网站</div>

@@ -13,6 +13,12 @@
     <link rel="stylesheet" href="layui/css/ssh.css">
 </head>
 <body>
+<%
+    //注册失败提示信息
+    if(request.getAttribute("msg")!= null && !request.getAttribute("msg").equals("登陆成功")){
+        out.print("<h2>"+request.getAttribute("msg")+"</h2>");
+    }
+%>
     <div class="layui-container center">
         <form class="layui-form" action="register.action" method="post">
             <div class="layui-form-item">
