@@ -1,6 +1,9 @@
 package com.c1yde3.ssh.service;
 
 import com.c1yde3.ssh.dao.BaseDAO;
+import com.c1yde3.ssh.model.Trans;
+import com.c1yde3.ssh.utils.FormatTrian;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
@@ -19,34 +22,92 @@ public class ServiceImpl implements Service {
     @Autowired
     private BaseDAO baseDAO;
 
-    @Override
-    public List<String[]> getALLTrips(String start, String end, String date) {
-        String[] station1 = {"K1580", "过上海站终" + end, "04:22","06:33", "02:07", "3", "--", "--", "--", "--", "--", "560", "--", "无", "有"};
-        String[] station2 = {"K1511", "过杭州终" + end, "04:22","06:33", "02:07", "--", "--", "--", "--", "10", "--", "10", "--", "12", "无"};
-        String[] station3 = {"K123", "过上海站终" + end, "04:22","06:33", "02:07", "--", "--", "--", "--", "--", "--", "无", "--", "无", "无"};
-        String[] station4 = {"D538", "过杭州终" + end, "04:22","06:33", "02:07", "2", "--", "--", "--", "--", "--", "无", "--", "无", "有"};
-        String[] station5 = {"G983", "过北京终" + end, "04:22","06:33", "02:07", "--", "无", "78", "--", "无", "--", "无", "--", "123", "无"};
-        List<String[]> lists = new ArrayList<String[]>();
+    @Autowired
+    private FormatTrian formatTrian;
 
-        lists.add(station1);
-        lists.add(station2);
-        lists.add(station3);
-        lists.add(station4);
-        lists.add(station5);
-        return lists;
-    }
+    @Autowired
+    private Gson gson;
 
-    /*
-    主要实现这个接口
+    @Autowired
+    private ServiceImpl service;
+
+
+    /**
+     * 根据出发地，目的地，出发时间查询所有符合的列车信息
+     * @param start 出发地
+     * @param end   目的地
+     * @param date  日期
+     * @return 返回所有符合的列车信息
      */
     @Override
     public Map<String, Object> getAllTrips(String start, String end, String date) {
-        Map<String, Object> map = new HashMap<>();
-        List<String[]> lists = new ServiceImpl().getALLTrips(start,end,date);
+        Map map = service.getTripsByTwoStation(start,end);
+        List list = service.getTripsByTwoStations(start,end);
+        //把所有符合日期的车次找出来
+        Trans trans;
+        for (int i=0;i<list.size();i++){
+            trans = (Trans) list.get(i);
+            if(trans.getDay().indexOf(date) == -1){
+                list.remove(i);
+            }
+        }
+        list = formatTrian.getformatedTrian(list,start,end);
+
         map.put("code",0);
-        map.put("msg","成功或失败或不写");
-        map.put("count",lists.size());
-        map.put("data",lists);
+        map.put("msg","123");
+        if(list != null){
+            map.put("count", list.size());
+            map.put("data", list);
+        }else{
+            map.put("count",list.size());
+            map.put("data","[]");
+        }
+        System.out.print(gson.toJson(map));
         return map;
     }
+
+
+    /**
+     * 根据出发地，目的地返回所有可能的列车
+     * @param station1  出发站
+     * @param station2  到达站
+     * @return 返回所有符合的列车信息
+     */
+    public Map<String,Object> getTripsByTwoStation(String station1,String station2){
+        Map<String, Object> map = new HashMap<>();
+
+        List formatedTrian = formatTrian.getformatedTrian(service.getTripsByTwoStations(station1,station2),station1,station2);
+
+        map.put("code",0);
+        map.put("msg","成功或失败或不写");
+        if (formatedTrian!=null) {
+            map.put("count", formatedTrian.size());
+            map.put("data", formatedTrian);
+        }else{
+            map.put("count",0);
+            map.put("data","[]");
+        }
+        System.out.print(gson.toJson(map));
+        return map;
+    }
+
+    public List getTripsByTwoStations(String station1,String station2){
+        List list = baseDAO.findByTwoStation(station1,station2);
+        //符合条件的结果集
+        List<Trans> trians = new ArrayList<>();
+        if (list != null){
+            for (int i=0; i<list.size(); i++){
+                Trans trian = (Trans) list.get(i);
+                //站点station1在站点station2先前到达，则添加到结果集
+                if(trian.getPassby().indexOf(station1) < trian.getPassby().indexOf(station2)) {
+                    trians.add(trian);
+                    System.out.println(trian.toString());
+                }
+            }
+            return trians;
+        }else{
+            return null;
+        }
+    }
+
 }

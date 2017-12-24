@@ -68,4 +68,34 @@ public class BaseDAOImpl implements BaseDAO {
     public List find(Object o) {
         return this.getHt().findByExample(o);
     }
+
+    /**
+     * 根据一个站点名查找所有车次
+     * @param station 站点名
+     * @return 返回包含站点名的所有车次信息
+     */
+    @Override
+    public List findByStation(String station){
+        List trians = this.getHt().find(" from com.c1yde3.ssh.model.Trans trian where trian.passby like '%"+station+"%'");
+        if(trians != null){
+            return trians;
+        }else{
+            return null;
+        }
+    }
+
+    /**
+     * 根据两个站点查找符合的车次
+     * @param station1 站点名1
+     * @param station2 站点名2
+     * @return 返回包含当前两站名的车此信息
+     */
+    @Override
+    public List findByTwoStation(String station1,String station2){
+        List trians = this.getHt().find(" from com.c1yde3.ssh.model.Trans trians where trians.passby like '%"+station1+"%' and  trians.passby like '%"+station2+"%'");if(trians != null){
+            return trians;
+        }else{
+            return null;
+        }
+    }
 }

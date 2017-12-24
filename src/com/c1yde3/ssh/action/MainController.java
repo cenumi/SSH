@@ -26,6 +26,9 @@ public class MainController {
     @Autowired
     private Service service;
 
+    @Autowired
+    private Gson gson;
+
     private String startStation;
     private String endStation;
     private String date;
@@ -37,8 +40,15 @@ public class MainController {
      */
     public String getAllTrips() {
         Map<String, Object>map = service.getAllTrips(startStation,endStation,date);
+//        Map<String, Object>map = service.getTripsByTwoStation(startStation,endStation);
+        String result = gson.toJson(map);
+        HttpServletRequest request = ServletActionContext.getRequest();
+        request.setAttribute("data",result);
+        return "success";
+    }
 
-        Gson gson = new Gson();
+    public String getTripByTwoStation(){
+        Map<String, Object> map = service.getTripsByTwoStation(startStation,endStation);
         String result = gson.toJson(map);
         HttpServletRequest request = ServletActionContext.getRequest();
         request.setAttribute("data",result);

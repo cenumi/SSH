@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.c1yde3.ssh.model.Trans" table="trans" schema="ssh">
+        <id name="id">
+            <column name="id" sql-type="int(11)"/>
+        </id>
+        <property name="number">
+            <column name="number" sql-type="varchar(15)" length="15"/>
+        </property>
+        <property name="depature">
+            <column name="depature" sql-type="varchar(10)" length="10"/>
+        </property>
+        <property name="arrival">
+            <column name="arrival" sql-type="varchar(10)" length="10"/>
+        </property>
+        <property name="passby">
+            <column name="passby" sql-type="varchar(1000)" length="1000"/>
+        </property>
+        <property name="ticket">
+            <column name="ticket" sql-type="varchar(400)" length="400" not-null="true"/>
+        </property>
+        <property name="day">
+            <column name="day" sql-type="varchar(20)" length="20" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

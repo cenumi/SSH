@@ -15,5 +15,7 @@
         <property name="hbm2ddl.auto">validate</property>
         <mapping class="com.c1yde3.ssh.model.User"/>
         <mapping resource="com/c1yde3/ssh/model/User.hbm.xml"/>
+        <mapping resource="com/c1yde3/ssh/model/Trans.hbm.xml"/>
+        <mapping class="com.c1yde3.ssh.model.Trans"/>
     </session-factory>
 </hibernate-configuration>

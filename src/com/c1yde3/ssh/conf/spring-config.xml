@@ -37,4 +37,10 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <tx:annotation-driven transaction-manager="txManager"/>
+
+    <bean id="gson" class="com.google.gson.Gson"/>
+
+    <bean id="formatTrian" class="com.c1yde3.ssh.utils.FormatTrian"/>
+
+    <bean id="serviceImpl" class="com.c1yde3.ssh.service.ServiceImpl"/>
 </beans>

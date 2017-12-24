@@ -14,4 +14,9 @@ public interface BaseDAO {
     boolean update(Object o);
 
     List find(Object o);
+
+    List findByStation(String station);
+
+    public List findByTwoStation(String station1,String station2);
+
 }
