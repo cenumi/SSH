@@ -13,23 +13,25 @@
 
 </head>
 <body>
+<%--<%!String data;%>--%>
 <%
     //用户信息，列车次信息获取
-    if(request.getAttribute("user")!= null && !request.getAttribute("user").equals("")){
-        String username = (String) request.getAttribute("user");
-        out.print(username);//测试
-    }
-    if(request.getAttribute("data")!=null && !request.getAttribute("data").equals("")){
-        String data = (String) request.getAttribute("data");
-        out.print(data);//测试
-    }
+//    if(request.getAttribute("user")!= null && !request.getAttribute("user").equals("")){
+//        String username = (String) request.getAttribute("user");
+//        out.print(username);//测试
+//    }
+//    if(request.getAttribute("data")!=null && !request.getAttribute("data").equals("")){
+//        data = (String) request.getAttribute("data");
+////        out.print(data);//测试
+//    }
 %>
     <div class="layui-layout-admin">
+
+        <%--导航--%>
         <div class="layui-header">
             <div class="layui-logo">12307 购票网站</div>
             <ul class="layui-nav layui-layout-left">
                 <li class="layui-nav-item layui-this"><a href="mian_panel.jsp">购票查询</a></li>
-                <li class="layui-nav-item"><a href="">站点管理</a></li>
                 <li class="layui-nav-item"><a href="">车次管理</a></li>
             </ul>
             <ul class="layui-nav layui-layout-right">
@@ -51,15 +53,76 @@
                 })
             </script>
         </div>
-        <div class="layui-layout-body layui-fluid">
+
+        <%--表单 --%>
+        <div class="layui-field-box">
+            <form class="layui-form" action="queryTrips.action" method="post">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <div class="layui-form-label">出发站 <i class="layui-icon">&#xe715;</i></div>
+                        <div class="layui-input-inline">
+                            <input class="layui-input" type="text" name="startStation" required lay-verify="required" placeholder="汉字"/>
+
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <div class="layui-form-label">到达站 <i class="layui-icon">&#xe715;</i></div>
+                        <div class="layui-input-inline">
+                            <input class="layui-input" type="text" name="endStation" required lay-verify="required" placeholder="汉字" />
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <div class="layui-form-label">日期 <i class="layui-icon">&#xe637;</i></div>
+                        <div class="layui-input-inline">
+                            <input class="layui-input layui-inline" type="date" name="date">
+                        </div>
+
+
+                    </div>
+                    <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <button class="layui-btn" lay-submit lay-filter="train_form">查询</button>
+                            <button class="layui-btn" lay-filter="train_form">高级模式</button>
+                        </div>
+                    </div>
+                    <%--高级选项--%>
+                    <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <input class="layui-form-radio" name="advance" value="length" title="最短距离" >
+                            <input class="layui-form-radio" name="advance" value="money" title="最少金额" >
+                            <input class="layui-form-radio" name="advance" value="transfer" title="中转站" >
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <script>
+                //Demo
+                layui.use('form', function(){
+                    var form = layui.form;
+
+                    //监听提交
+                    form.on('submit(train_form)', function(data){
+                        layui.msg(JSON.stringify(data.field));
+                    });
+                });
+            </script>
+        </div>
+
+        <%--表格 --%>
+        <div class="layui-fluid">
             <table id="train_table"></table>
             <%--<script src="layui/layui.js"></script>--%>
             <script>
+                var a = ${data}['data'];
+                console.log(${data});
                 layui.use('table',function () {
-                    var table = layui.table
+                    var table = layui.table;
                     table.render({
                         elem:'#train_table',
                         height:'400',
+                        // url:'queryTrips.action',
+                        data:a,
                         page:true,
                         cols:[[
                             {field: 'id', title: '车次', width:120, fixed: 'left'},
@@ -81,6 +144,9 @@
                         ]]
                     })
                 })
+
+
+
             </script>
         </div>
     </div>
