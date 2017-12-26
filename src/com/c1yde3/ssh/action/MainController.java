@@ -1,5 +1,6 @@
 package com.c1yde3.ssh.action;
 
+import com.c1yde3.ssh.model.StationPOJO;
 import com.c1yde3.ssh.service.Service;
 import com.c1yde3.ssh.utils.ResultUtils;
 import com.google.gson.Gson;
@@ -12,9 +13,11 @@ import org.springframework.stereotype.Controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * Created by wangyonghao8 on 2017/12/12
@@ -34,26 +37,33 @@ public class MainController {
     private String date;
 
     /**
-     * 函数说明:  指定出发地，目的地和时间，返回所有可能的车次
+     * 函数说明:  指定出发地，目的地(和时间)，返回所有可能的车次
      *
      * @return 返回所有匹配车次
      */
-    public String getAllTrips() {
-        Map<String, Object>map = service.getAllTrips(startStation,endStation,date);
-//        Map<String, Object>map = service.getTripsByTwoStation(startStation,endStation);
+    public String getTripsByStartEndDate() {
+        Map<String, Object>map = service.getTripsByStartEndDate(startStation,endStation,date);
         String result = gson.toJson(map);
+        System.out.println(result);
         HttpServletRequest request = ServletActionContext.getRequest();
         request.setAttribute("data",result);
         return "success";
     }
 
-    public String getTripByTwoStation(){
-        Map<String, Object> map = service.getTripsByTwoStation(startStation,endStation);
-        String result = gson.toJson(map);
-        HttpServletRequest request = ServletActionContext.getRequest();
-        request.setAttribute("data",result);
+    /**
+     * 更新一个列车
+     * @return 做个样子
+     */
+    public String updateOneTrip(){
+        //TODO：前端数据封装成TrianPOJO，执行下面语句就好了
+//        Map<String, Object>map = service.updateOneTrip(pojo);
+//        String result = gson.toJson(map);
+//        System.out.println(result);
+//        HttpServletRequest request = ServletActionContext.getRequest();
+//        request.setAttribute("data",result);
         return "success";
     }
+
 
     public String getStartStation() {
         return startStation;

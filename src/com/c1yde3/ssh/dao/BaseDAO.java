@@ -15,8 +15,8 @@ public interface BaseDAO {
 
     List find(Object o);
 
-    List findByStation(String station);
+    List findByTwoStation(String station1,String station2);
 
-    public List findByTwoStation(String station1,String station2);
+    List getAllTrips();
 
 }

@@ -39,7 +39,7 @@
                         <a href="register.jsp">还没有账号?点此注册</a>
                     </div>
                     <div>
-                        <a href="trainIndex.jsp">先去看火车票</a>
+                        <a href="mian_panel.jsp">先去看火车票</a>
                     </div>
                 </div>
             </div>

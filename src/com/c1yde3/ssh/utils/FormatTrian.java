@@ -14,19 +14,57 @@ import java.util.List;
  */
 public class FormatTrian {
 
-    @Autowired
-    private Gson gson;
-
     public List getformatedTrian(List trians,String start,String end){
+        List list = this.getformatedTrian(trians);
+        if(start.equals("") || start == null) {
+            return list;
+        }else {
+            for (int i=0;i<list.size();i++) {
+                List stations = ((TrainPOJO) list.get(i)).getPassby();
+                List wantedStation = new ArrayList();
+                int temp = stations.size();
+                int baseMoney=0;
+                for (int j=0;j<stations.size();j++){
+                    //找到出发站
+                    if (((StationPOJO)stations.get(j)).getName().equals(start)){
+                        ((TrainPOJO) list.get(i)).setDeparture_time(((StationPOJO)stations.get(j)).getDepatureTime());//更新列车出发时间
+                        ((TrainPOJO) list.get(i)).setDeparture_name(((StationPOJO)stations.get(j)).getName());//更新列车出发站
+                        baseMoney = Integer.valueOf(((StationPOJO)stations.get(j)).getMoney());//获取相对车票钱
+                        temp = j;
+                        wantedStation.add(stations.get(j));
+                    }
+                    //更新出发站到目的站的票价
+                    if(temp < j ){
+                        ((StationPOJO)stations.get(j)).setMoney(
+                                String.valueOf(
+                                        Integer.valueOf(
+                                                ((StationPOJO)stations.get(j)).getMoney())-baseMoney));
+                        wantedStation.add(stations.get(j));
+                    }
+                    //找到终点站
+                    if (((StationPOJO)stations.get(j)).getName().equals(end)){
+                        ((TrainPOJO) list.get(i)).setArrive_time(((StationPOJO)stations.get(j)).getArrivalTime());//更新列车到达时间
+                        ((TrainPOJO) list.get(i)).setArrive_name(((StationPOJO)stations.get(j)).getName());//更新列车终点站名
+                        //wantedStation.add(stations.get(j));
+                        break;//列车解析完成，跳出
+                    }
+                }
+                ((TrainPOJO) list.get(i)).setPassby(wantedStation);//更新列车站点图
+            }
+
+            return list;
+        }
+    }
+
+    public List getformatedTrian(List trians){
         List formatList = new ArrayList<>();
         for (int i=0;i<trians.size();i++){
             Trans trian = (Trans) trians.get(i);
-            System.out.println(trian.toString());
             TrainPOJO pojo = new TrainPOJO();
             String[] part;//用于解析字符串
             pojo.setId(trian.getNumber());//列车号
-            pojo.setDeparture_name(start);//出发站
-            pojo.setArrive_name(end);//到达站
+            pojo.setDeparture_time(trian.getDepature());//出发时间
+            pojo.setArrive_time(trian.getArrival());//到达时间
             pojo.setDay(trian.getDay());//设置日期
             //解析车票
             part = trian.getTicket().split(";");
@@ -42,36 +80,23 @@ public class FormatTrian {
             pojo.setClass9(part[9]);
             //解析经过站
             part = trian.getPassby().split(";");
+            pojo.setDeparture_name(part[0].split(",")[4]);//出发站
+            pojo.setArrive_name(part[part.length-1].split(",")[4]);//到达站
             String[] temp;//用于保存单个站点信息
-            //找到出发站于到达站的位置
-            int startIndex=0;
-            int endIndex=0;
-            int baseMoney = 0;
-            for (int j=0;j<part.length;j++){
-                temp = part[j].split(",");
-                if(temp[2].equals(start)){
-                    startIndex = j;
-                    pojo.setDeparture_time(temp[0]);//出发时间
-                    baseMoney = Integer.valueOf(temp[1]);
-                }
-                if(temp[2].equals(end)){
-                    endIndex = j;
-                    pojo.setArrive_time(temp[0]);//到达时间
-                }
-            }
             //把出发站于到达站之间的站点信息解析出来并且封装
             List stations = new ArrayList();
-            for(int j=startIndex;j<endIndex;j++){
+            for(int j=0;j<part.length;j++){
                 StationPOJO station = new StationPOJO();
                 temp = part[j].split(",");
-                station.setTime(temp[0]);
-                station.setMoney(String.valueOf(Integer.valueOf(temp[1])-baseMoney));
-                station.setName(temp[2]);
+                station.setArrivalTime(temp[0]);
+                station.setStayTime(temp[1]);
+                station.setDepatureTime(temp[2]);
+                station.setMoney(temp[3]);
+                station.setName(temp[4]);
                 stations.add(station);
             }
             pojo.setPassby(stations);//解析经过站完成
             //TODO: 解析耗时
-            //pojo.setSpend(().toString);
             pojo.setSpend("6:30");
 
             formatList.add(pojo);
@@ -79,4 +104,10 @@ public class FormatTrian {
         return  formatList;
     }
 
+
+    public Trans formatedToTrian(TrainPOJO pojo){
+        Trans trans = new Trans();
+        //TODO:逆向转换
+        return trans;
+    }
 }

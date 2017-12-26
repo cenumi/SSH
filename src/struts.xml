@@ -11,17 +11,17 @@
 
     <package name="com.c1yde3.ssh.action" namespace="/" extends="struts-default">
         <action name="login" class="com.c1yde3.ssh.action.UserAction" method="login">
-            <result name="success">/trainIndex.jsp</result>
+            <result name="success">/mian_panel.jsp</result>
             <result name="error">/index.jsp</result>
         </action>
 
         <action name="register" class="com.c1yde3.ssh.action.UserAction" method="register">
-            <result name="success">/trainIndex.jsp</result>
+            <result name="success">/mian_panel.jsp</result>
             <result name="error">/register.jsp</result>
         </action>
 
         <!--queryTrips-->
-        <action name="queryTrips" class="com.c1yde3.ssh.action.MainController" method="getAllTrips">
+        <action name="queryTrips" class="com.c1yde3.ssh.action.MainController" method="getTripsByStartEndDate">
             <result name="success">/mian_panel.jsp</result>
         </action>
     </package>
