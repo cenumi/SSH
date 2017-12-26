@@ -45,6 +45,8 @@ public class FormatTrian {
                     if (((StationPOJO)stations.get(j)).getName().equals(end)){
                         ((TrainPOJO) list.get(i)).setArrive_time(((StationPOJO)stations.get(j)).getArrivalTime());//更新列车到达时间
                         ((TrainPOJO) list.get(i)).setArrive_name(((StationPOJO)stations.get(j)).getName());//更新列车终点站名
+                        String time = calTime(((TrainPOJO) list.get(i)).getDeparture_time(),((TrainPOJO) list.get(i)).getArrive_time());
+                        ((TrainPOJO) list.get(i)).setSpend(time);//更新列车耗时
                         //wantedStation.add(stations.get(j));
                         break;//列车解析完成，跳出
                     }
@@ -97,7 +99,7 @@ public class FormatTrian {
             }
             pojo.setPassby(stations);//解析经过站完成
             //TODO: 解析耗时
-            pojo.setSpend("6:30");
+            pojo.setSpend(calTime(pojo.getDeparture_time(),pojo.getArrive_time()));
 
             formatList.add(pojo);
         }
@@ -109,5 +111,26 @@ public class FormatTrian {
         Trans trans = new Trans();
         //TODO:逆向转换
         return trans;
+    }
+
+    /**
+     * 计算列车的时间
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    public static String calTime(String startTime,String endTime){
+        char[] a = startTime.toCharArray();
+        char[] b = endTime.toCharArray();
+        int st = ((a[0]-'0')*10+(a[1]-'0'))*60+(a[3]-'0')*10+(a[4]-'0');//min
+        int et = ((b[0]-'0')*10+(b[1]-'0'))*60+(b[3]-'0')*10+(b[4]-'0');//min
+        int time = et - st;
+        if(time<0){   //差一天
+            time+=24*60;
+        }
+        int hour=time/60;
+        int minute=time%60;
+        return  String.valueOf(hour)+"h"+String.valueOf(minute)+"m";
+
     }
 }
