@@ -64,6 +64,18 @@ public class MainController {
         return "success";
     }
 
+    /**
+     * 根据出发站，终点站，时间查找两趟列车
+     */
+    public String getIndirectTrip(){
+        Map<String, Object>map = service.getIndirectTrain(startStation,endStation,date);
+        String result = gson.toJson(map);
+        System.out.println(result);
+        HttpServletRequest request = ServletActionContext.getRequest();
+        request.setAttribute("data",result);
+        return "success";
+    }
+
 
     public String getStartStation() {
         return startStation;

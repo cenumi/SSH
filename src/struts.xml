@@ -24,5 +24,13 @@
         <action name="queryTrips" class="com.c1yde3.ssh.action.MainController" method="getTripsByStartEndDate">
             <result name="success">/mian_panel.jsp</result>
         </action>
+        <!--updateTrips-->
+        <action name="updateOneTrip" class="com.c1yde3.ssh.action.MainController" method="updateOneTrip">
+            <result name="success">/mian_panel.jsp</result>
+        </action>
+        <!--getIndirectTrips-->
+        <action name="getIndirectTrip" class="com.c1yde3.ssh.action.MainController" method="getIndirectTrip">
+            <result name="success">/mian_panel.jsp</result>
+        </action>
     </package>
 </struts>

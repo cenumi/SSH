@@ -1,6 +1,7 @@
 package com.c1yde3.ssh.service;
 
 import com.c1yde3.ssh.dao.BaseDAO;
+import com.c1yde3.ssh.model.StationPOJO;
 import com.c1yde3.ssh.model.TrainPOJO;
 import com.c1yde3.ssh.model.Trans;
 import com.c1yde3.ssh.utils.FormatTrian;
@@ -106,9 +107,11 @@ public class ServiceImpl implements Service {
         List list = baseDAO.findByTwoStation(startStation,endStation);
 
         for (int i=0; i<list.size(); i++){
+            System.out.println(list.get(i).toString());
             //站点startStation在站点endStation先前到达，则添加到结果集
             if (((Trans) list.get(i)).getPassby().indexOf(startStation) >= ((Trans) list.get(i)).getPassby().indexOf(endStation)){
                 list.remove(i);
+                i=-1;//important,删除list，i也要变
             }
         }
         return list;
@@ -146,5 +149,87 @@ public class ServiceImpl implements Service {
         Map<String,Object> map = new HashMap<>();
         map.put("code",t);
         return  map;
+    }
+
+    /**
+     * 当前版本没有最短路径，最少花费，最少时间判断，只是给出第一个匹配到的中转站
+     * @param start 出发展
+     * @param end   终点站
+     * @param date  日期
+     * @return
+     */
+    @Override
+    public Map<String,Object> getIndirectTrain(String start, String end, String date){
+        Map<String,Object> map = new HashMap<>();
+        //1.获取所有包含站点及对应时间的列车,并且格式化
+        List startTrip = this.getListBystationDate(start,date);
+        List endTrip = this.getListBystationDate(end,date);
+        //2.找
+        List wantTrips = new ArrayList();
+        String hop=null;//中间站
+        for (int i=0;i<startTrip.size();i++){
+            TrainPOJO train = (TrainPOJO) startTrip.get(i);
+            List<StationPOJO> stations = train.getPassby();
+            for (int j=0;j<stations.size();j++){
+                if (stations.get(j).getName().equals(start) && j != stations.size()-1){
+                    //获取当前列车起始站后面的所有站
+                    List<StationPOJO> pojos = stations.subList(j,stations.size()-1);
+                    //查找后面的站
+                    for (int t=0;t<pojos.size();t++){
+                        hop = pojos.get(t).getName();
+                        List list = service.getTrips(hop,end);
+                        if (list.size() > 0){
+                            //找到符合的,只选一个对列车
+                            wantTrips.add(startTrip.get(i));
+                            wantTrips.add(list.get(0));
+                            break;
+                        }
+                    }
+                }
+                if (wantTrips.size() != 0){
+                    break;
+                }
+            }
+            if (wantTrips.size() != 0){
+                break;
+            }
+        }
+        if (wantTrips.size() != 0){
+            Trans one = (Trans) wantTrips.get(0);
+            List oneList = new ArrayList();
+            oneList.add(one);
+            oneList = formatTrian.getformatedTrian(oneList,start,hop);
+            Trans two = (Trans) wantTrips.get(1);
+            List twoList = new ArrayList();
+            twoList.add(two);
+            twoList = formatTrian.getformatedTrian(twoList,hop,end);
+            wantTrips.clear();
+            wantTrips.add(oneList.get(0));
+            wantTrips.add(twoList.get(0));
+            map.put("msg","成功");
+            map.put("count",wantTrips.size());
+            map.put("data",wantTrips);
+        }else{
+            map.put("msg","失败");
+            map.put("count",0);
+            map.put("data",null);
+        }
+
+        return map;
+    }
+    //辅助getIndirectTrain方法
+    public List getListBystationDate(String station,String date){
+        List Trip = baseDAO.getTripByOneStation(station);
+        if (Trip != null){
+            //把所有符合日期的车次找出来
+            Trans trans;
+            for(int i=0;i<Trip.size();i++){
+                trans = (Trans) Trip.get(i);
+                if(trans.getDay().indexOf(date) == -1){
+                    Trip.remove(i);
+                }
+            }
+        }
+        return formatTrian.getformatedTrian(Trip);
     }
 }

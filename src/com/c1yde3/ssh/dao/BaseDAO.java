@@ -19,4 +19,6 @@ public interface BaseDAO {
 
     List getAllTrips();
 
+    List getTripByOneStation(String station);
+
 }

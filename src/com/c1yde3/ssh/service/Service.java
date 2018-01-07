@@ -40,4 +40,14 @@ public interface Service {
      * @return 返回成功失败
      */
     Map<String,Object> updateOneTrip(TrainPOJO trainPOJO);
+
+
+    /**
+     * 获取不能直达的两趟列车给客户
+     * @param start 出发展
+     * @param end   终点站
+     * @param date  日期
+     * @return  返回前端需要的数据，即两趟列车信息
+     */
+    Map<String,Object> getIndirectTrain(String start, String end, String date);
 }

@@ -86,4 +86,9 @@ public class BaseDAOImpl implements BaseDAO {
     public List getAllTrips() {
         return this.getHt().find("from com.c1yde3.ssh.model.Trans");
     }
+
+    @Override
+    public List getTripByOneStation(String station) {
+        return this.getHt().find(" from com.c1yde3.ssh.model.Trans trian where trian.passby like '%"+station+"%'");
+    }
 }
