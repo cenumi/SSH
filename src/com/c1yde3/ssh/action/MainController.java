@@ -51,6 +51,19 @@ public class MainController {
     }
 
     /**
+     * 获取全部列车信息，以便维护列车
+     * @return  所有列车的信息
+     */
+    public String getNeedUpdateTrip(){
+        Map<String, Object>map = service.getAllTrips();
+        String result = gson.toJson(map);
+        System.out.println(result);
+        HttpServletRequest request = ServletActionContext.getRequest();
+        request.setAttribute("data",result);
+        return "success";
+    }
+
+    /**
      * 更新一个列车
      * @return 做个样子
      */

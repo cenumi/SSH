@@ -124,7 +124,8 @@ public class ServiceImpl implements Service {
      */
     @Override
     public Map<String, Object> getAllTrips() {
-        List list = formatTrian.getformatedTrian(baseDAO.getAllTrips());
+//        List list = formatTrian.getformatedTrian(baseDAO.getAllTrips());
+        List list = baseDAO.getAllTrips();
         Map<String,Object> map = new HashMap<>();
         map.put("code",0);
         map.put("count",list.size());
@@ -177,7 +178,7 @@ public class ServiceImpl implements Service {
                     //查找后面的站
                     for (int t=0;t<pojos.size();t++){
                         hop = pojos.get(t).getName();
-                        List list = service.getTrips(hop,end);
+                        List list = formatTrian.getformatedTrian(service.getTrips(hop,end));
                         if (list.size() > 0){
                             //找到符合的,只选一个对列车
                             wantTrips.add(startTrip.get(i));
@@ -195,17 +196,17 @@ public class ServiceImpl implements Service {
             }
         }
         if (wantTrips.size() != 0){
-            Trans one = (Trans) wantTrips.get(0);
-            List oneList = new ArrayList();
-            oneList.add(one);
-            oneList = formatTrian.getformatedTrian(oneList,start,hop);
-            Trans two = (Trans) wantTrips.get(1);
-            List twoList = new ArrayList();
-            twoList.add(two);
-            twoList = formatTrian.getformatedTrian(twoList,hop,end);
-            wantTrips.clear();
-            wantTrips.add(oneList.get(0));
-            wantTrips.add(twoList.get(0));
+//            TrainPOJO one = (TrainPOJO) wantTrips.get(0);
+//            List oneList = new ArrayList();
+//            oneList.add(one);
+//            oneList = formatTrian.getformatedTrian(oneList,start,hop);
+//            Trans two = (Trans) wantTrips.get(1);
+//            List twoList = new ArrayList();
+//            twoList.add(two);
+//            twoList = formatTrian.getformatedTrian(twoList,hop,end);
+//            wantTrips.clear();
+//            wantTrips.add(oneList.get(0));
+//            wantTrips.add(twoList.get(0));
             map.put("msg","成功");
             map.put("count",wantTrips.size());
             map.put("data",wantTrips);

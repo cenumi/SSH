@@ -24,6 +24,10 @@
         <action name="queryTrips" class="com.c1yde3.ssh.action.MainController" method="getTripsByStartEndDate">
             <result name="success">/mian_panel.jsp</result>
         </action>
+        <!--获取全部列车信息，以便维护列车-->
+        <action name="getAllTrips" class="com.c1yde3.ssh.action.MainController" method="getNeedUpdateTrip">
+            <result name="success">/mian_panel.jsp</result>
+        </action>
         <!--updateTrips-->
         <action name="updateOneTrip" class="com.c1yde3.ssh.action.MainController" method="updateOneTrip">
             <result name="success">/mian_panel.jsp</result>
