@@ -59,7 +59,7 @@
 
 <form action="getIndirectTrip" method="post">
 
-    <input name="startStation" value="杭州" type="text">
+    <input name="startStation" value="嘉兴" type="text">
     <input name="endStation" value="北京" type="text">
     <input name="date" value="2017/10/12" type="text">
     <input type="submit" value="提交">

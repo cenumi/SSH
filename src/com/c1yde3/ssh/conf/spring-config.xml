@@ -26,6 +26,11 @@
     <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
         <property name="configLocation" value="classpath:com/c1yde3/ssh/conf/hibernate.cfg.xml" />
         <property name="dataSource" ref="dataSource" />
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.autoReconnect">true</prop>
+            </props>
+        </property>
     </bean>
 
     <bean id="ht" class="org.springframework.orm.hibernate5.HibernateTemplate">

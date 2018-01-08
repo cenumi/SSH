@@ -1,6 +1,7 @@
 package com.c1yde3.ssh.action;
 
 import com.c1yde3.ssh.model.StationPOJO;
+import com.c1yde3.ssh.model.Trans;
 import com.c1yde3.ssh.service.Service;
 import com.c1yde3.ssh.utils.ResultUtils;
 import com.google.gson.Gson;
@@ -17,6 +18,8 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static javafx.scene.input.KeyCode.T;
 
 
 /**
@@ -68,7 +71,17 @@ public class MainController {
      * @return 做个样子
      */
     public String updateOneTrip(){
-        //TODO：前端数据封装成TrianPOJO，执行下面语句就好了
+        //TODO：前端数据封装成TriaPOJO，执行下面语句就好了
+        Trans newTrain = new Trans();
+        HttpServletRequest request = ServletActionContext.getRequest();
+        newTrain.setId( Integer.valueOf(request.getParameter("id")));
+        newTrain.setArrival(request.getParameter("arrival"));
+        newTrain.setDay(request.getParameter("date"));
+        newTrain.setDepature(request.getParameter("depature"));
+        newTrain.setNumber(request.getParameter("number"));
+        newTrain.setPassby(request.getParameter("passby"));
+        newTrain.setTicket(request.getParameter("ticket"));
+        service.updateOneTrip(newTrain);
 //        Map<String, Object>map = service.updateOneTrip(pojo);
 //        String result = gson.toJson(map);
 //        System.out.println(result);

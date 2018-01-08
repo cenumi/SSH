@@ -140,15 +140,14 @@ public class ServiceImpl implements Service {
 
     /**
      * 更新列车信息，存储到数据库
-     * @param trainPOJO 列车车次
+     * @param tran 列车车次
      * @return 返回成功失败
      */
     @Override
-    public Map<String,Object> updateOneTrip(TrainPOJO trainPOJO) {
-        Trans trans = formatTrian.formatedToTrian(trainPOJO);
-        boolean t =  baseDAO.update(trans);
+    public Map<String,Object> updateOneTrip(Trans tran) {
+        boolean t =  baseDAO.update(tran);
         Map<String,Object> map = new HashMap<>();
-        map.put("code",t);
+        map.put("code",1);
         return  map;
     }
 
@@ -169,12 +168,14 @@ public class ServiceImpl implements Service {
         List wantTrips = new ArrayList();
         String hop=null;//中间站
         for (int i=0;i<startTrip.size();i++){
+            //分析每一趟列车
             TrainPOJO train = (TrainPOJO) startTrip.get(i);
             List<StationPOJO> stations = train.getPassby();
+            //找到当前列车查询的出发站后面的所有站点
             for (int j=0;j<stations.size();j++){
                 if (stations.get(j).getName().equals(start) && j != stations.size()-1){
                     //获取当前列车起始站后面的所有站
-                    List<StationPOJO> pojos = stations.subList(j,stations.size()-1);
+                    List<StationPOJO> pojos = stations.subList(j,stations.size());
                     //查找后面的站
                     for (int t=0;t<pojos.size();t++){
                         hop = pojos.get(t).getName();

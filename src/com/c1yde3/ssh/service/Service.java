@@ -1,6 +1,7 @@
 package com.c1yde3.ssh.service;
 
 import com.c1yde3.ssh.model.TrainPOJO;
+import com.c1yde3.ssh.model.Trans;
 
 import java.util.List;
 import java.util.Map;
@@ -39,7 +40,7 @@ public interface Service {
      * @param trainPOJO 列车车次
      * @return 返回成功失败
      */
-    Map<String,Object> updateOneTrip(TrainPOJO trainPOJO);
+    Map<String,Object> updateOneTrip(Trans tran);
 
 
     /**
