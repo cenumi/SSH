@@ -82,12 +82,16 @@ public class MainController {
         newTrain.setPassby(request.getParameter("passby"));
         newTrain.setTicket(request.getParameter("ticket"));
         service.updateOneTrip(newTrain);
+        Map<String, Object>map = service.getAllTrips();
+        String result = gson.toJson(map);
+        System.out.println(result);
+        request.setAttribute("data",result);
+        return "success";
 //        Map<String, Object>map = service.updateOneTrip(pojo);
 //        String result = gson.toJson(map);
 //        System.out.println(result);
 //        HttpServletRequest request = ServletActionContext.getRequest();
 //        request.setAttribute("data",result);
-        return "success";
     }
 
     /**
