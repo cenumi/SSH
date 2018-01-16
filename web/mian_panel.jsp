@@ -27,6 +27,7 @@
                 <li class="layui-nav-item">
                     <a href="javascript:;">用户</a>
                     <dl class="layui-nav-child">
+                        <dd><a href="">删除用户</a></dd>
                         <dd><a href="">退出登陆</a></dd>
                     </dl>
                 </li>
@@ -37,36 +38,59 @@
         <div class="layui-field-box">
             <form class="layui-form"  method="post">
                 <div class="layui-form-item">
-                    <div class="layui-inline">
-                        <div class="layui-form-label">出发站 <i class="layui-icon">&#xe715;</i></div>
-                        <div class="layui-input-inline">
-                            <input class="layui-input" type="text" name="startStation" required lay-verify="required" placeholder="汉字"/>
+                    <div class="layui-row">
+                        <div class="layui-col-md8 layui-show-md-inline">
+                            <div class="layui-inline">
+                                <div class="layui-form-label">出发站 <i class="layui-icon">&#xe715;</i></div>
+                                <div class="layui-input-inline">
+                                    <input class="layui-input" type="text" name="startStation" required lay-verify="required" placeholder="汉字"/>
 
-                        </div>
-                    </div>
-                    <div class="layui-inline">
-                        <div class="layui-form-label">到达站 <i class="layui-icon">&#xe715;</i></div>
-                        <div class="layui-input-inline">
-                            <input class="layui-input" type="text" name="endStation" required lay-verify="required" placeholder="汉字" />
-                        </div>
-                    </div>
-                    <div class="layui-inline">
-                        <div class="layui-form-label">日期 <i class="layui-icon">&#xe637;</i></div>
-                        <div class="layui-input-inline">
-                            <input class="layui-input layui-inline" type="date" name="date">
-                        </div>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <div class="layui-form-label">到达站 <i class="layui-icon">&#xe715;</i></div>
+                                <div class="layui-input-inline">
+                                    <input class="layui-input" type="text" name="endStation" required lay-verify="required" placeholder="汉字" />
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <div class="layui-form-label">日期 <i class="layui-icon">&#xe637;</i></div>
+                                <div class="layui-input-inline">
+                                    <input class="layui-input layui-inline" type="date" name="date">
+                                </div>
 
 
-                    </div>
-                    <div class="layui-inline">
-                        <div class="layui-input-inline">
-                            <button class="layui-btn"  lay-filter="train_form" onclick="normal()">查询</button>
-                            <button class="layui-btn" lay-filter="train_form" onclick="advanced()">高级查询</button>
+                            </div>
+                        </div>
+                        <div class="layui-col-md4 ">
+                            <%--<div class="layui-inline">--%>
+                                <div class="layui-inline">
+                                    <button class="layui-btn"  lay-filter="train_form" onclick="normal()">查询</button>
+                                    <%--<button class="layui-btn" lay-filter="train_form" onclick="advanced()">中转站站查询</button>--%>
+                                    <%--<button class="layui-btn" lay-filter="train_form" onclick="advanced2()">最短路径查询</button>--%>
+                                    <%--<button class="layui-btn" lay-filter="train_form" onclick="advanced3()">最便宜路径查询</button>--%>
+                                </div>
+                                <div class="layui-inline">
+                                    <button class="layui-btn" lay-filter="train_form" onclick="advanced()">中转站</button>
+
+                                </div>
+                                <div class="layui-inline">
+                                    <button class="layui-btn"  onclick="advanced3()">最便宜</button>
+                                </div>
+                                <div class="layui-inline">
+                                    <button class="layui-btn"  onclick="advanced2()">最短</button>
+
+                                </div>
+                            <%--</div>--%>
                         </div>
                     </div>
+
+
 
                 </div>
+
             </form>
+
         </div>
 
         <%--表格 --%>
@@ -131,6 +155,18 @@
         var f = document.forms[0];
         f.action = 'getIndirectTrip.action';
         f.submit();
+    }
+    function advanced2(){
+        var a = '[{"id":"K8500","departure_name":"杭州","arrive_name":"上海","departure_time":"05:30","arrive_time":"13:00","spend":"7h30m","class0":"--","class1":"--","class2":"--","class3":"--","class4":"20","class5":"--","class6":"10","class7":"--","class8":"无","class9":"无","passby":[{"arrivalTime":"05:15","depatureTime":"05:30","stayTime":"15","money":"0","name":"杭州"},{"arrivalTime":"06:15","depatureTime":"06:23","stayTime":"8","money":"23","name":"嘉兴"},{"arrivalTime":"13:00","depatureTime":"13:06","stayTime":"6","money":"128","name":"上海"}],"day":"2017/10/12"}]';
+        table.reload({
+            data:a
+        });
+    }
+    function advanced3() {
+        var a = '[{"id":"K8501","departure_name":"杭州","arrive_name":"上海","departure_time":"05:30","arrive_time":"06:15","spend":"0h45m","class0":"--","class1":"--","class2":"--","class3":"--","class4":"20","class5":"--","class6":"10","class7":"--","class8":"无","class9":"无","passby":[{"arrivalTime":"05:15","depatureTime":"05:30","stayTime":"15","money":"0","name":"杭州"},{"arrivalTime":"06:15","depatureTime":"06:23","stayTime":"8","money":"23","name":"上海"}],"day":"2017/10/10"}]';
+        table.reload({
+            data:a
+        });
     }
 
 
